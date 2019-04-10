@@ -12,10 +12,8 @@ public class Parser{ //takes a string from input buffer and parses what we want 
     
     
     private String line = null;
-
-
     public Parser(){
-        HttpRequest httprequest = new HttpRequest();
+        
     }
 
     private String[] splitter(String line, String delimeters){
@@ -23,36 +21,26 @@ public class Parser{ //takes a string from input buffer and parses what we want 
         return splitWords;
     }
     public HttpRequest parse(BufferedReader reader, ServerSocket server){
+        HttpRequest httprequest = new HttpRequest();
         do{
             try{
                line = reader.readLine();//iterates http requesttry
                 System.out.println(line);
                 String[] words = splitter(line, "[ ]+");
-                switch(words[0]){
-                    case "OPTIONS":
-                        break;
-                    case "GET":
-                        break;
-                    case "HEAD":
-                        break;
-                    case "POST":
-                        break;
-                    case "PUT":
-                        break;
-                    case "DELETE":
-                        break;
-                    case "TRACE":
-                        break;
-                    case "CONNECT":
-                        break;
-                    default:
-                        System.out.println("Error, http/1.1 wants "+words[0]+" ... invalid method.");
+                if (words[0].equals("Host:")){
+                    words = splitter(words[1], "[:]");
+                    httprequest.setHost(words[0]);
+                    if(!words[1].isEmpty()){
+                        int port = Integer.parseInt(words[1]);
+                        httprequest.setPort(port);
+                    }
                 }
+                httprequest.addLine(line);
             }
             catch(IOException i){
                 System.out.println(i);
             }
         } while (!(line.isEmpty()));
-        return null;
+        return httprequest;
     }
 }
