@@ -29,13 +29,14 @@ public class HttpRequest{
     public void output(){
         System.out.println(lines);
     }
-    public void outputReturn(BufferedReader in){
+    public void getReturn(BufferedReader in){
         
-        String line;
         System.out.println("Writing return to object: \r\n");
         try{
+            String line = "";
             line = in.readLine();
-            while (!line.isEmpty()) {
+            if(line != null){
+            while (!(line.isEmpty())) {
                     System.out.println(line);
                     responseHeader.add(line);
                     line = in.readLine();
@@ -46,6 +47,7 @@ public class HttpRequest{
                 responseBody.add(line);
                 line = in.readLine();
             }
+        }
         }
         catch(IOException i){
             //donothing
@@ -80,7 +82,7 @@ public class HttpRequest{
             out.write(lines.get(i) + "\r\n");
         }
         out.flush();
-        outputReturn(in);
+        getReturn(in);
         socket.close();
     }
 }
