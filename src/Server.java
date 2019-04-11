@@ -15,7 +15,7 @@ public class Server {
     private BufferedReader reader = null;
     private ServerSocket server = null;
     private Parser parser = null;
-    
+    private IceBox icebox = new IceBox();
     
     public Server(int port) throws IOException {
         server = new ServerSocket(port);
@@ -25,7 +25,8 @@ public class Server {
     
     private void mainLoop(){//this mainLoop is looped from Main to drive the program
         if(findRequestLoop()){
-            readFoundRequest();
+            HttpRequest httprequest = readFoundRequest();
+            icebox.handle(httprequest, clientSocket);
         }
     }
     
