@@ -37,11 +37,14 @@ public class Parser{ //takes a string from input buffer and parses what we want 
                 String[] words = splitter(line, "[ ]+");
                     boolean uglyword = true;
                     while(uglyword){
+                        if(words[0].equals("CONNECT") || words[0].equals("Referer")){ //https and referrals get dropped for now
+                            httprequest.drop();
+                        }
                         if (words[0].equals("Accept-Encoding:")) { // skip gzip encoding, etc., otherwise you're liable to get binary
                             line = reader.readLine();
                             words = splitter(line, "[ ]+");//drive loop
                         } else if (words[0].equals("Host:")) { // parse out host so we know where to open a socket
-                            if (words[1] == "detectportal.firefox.com") {
+                            if (words[1].equals("detectportal.firefox.com") || words[1].equals("firefox.settings.services.mozilla.com:443")){
                                 httprequest.drop();
                             }
                             words = splitter(words[1], "[:]");

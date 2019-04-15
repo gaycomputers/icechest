@@ -17,5 +17,9 @@ public class IceBox{//responsible for taking a httprequest and following the flo
         catch(IOException i){
             System.out.println(i);
         }
+        catch(NullPointerException n){
+            System.out.println(n);
+        }
+        socket.close();
     }
 }

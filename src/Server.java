@@ -16,17 +16,34 @@ public class Server {
     private ServerSocket server = null;
     private Parser parser = null;
     private IceBox icebox = new IceBox();
+    private int port = 0;
     
-    public Server(int port) throws IOException {
+    public Server(int por) throws IOException {
+        port = por;
         server = new ServerSocket(port);
         parser = new Parser();
     }
     
     
     private void mainLoop(){//this mainLoop is looped from Main to drive the program
+        if(server.isClosed()){
+            try{
+            server = new ServerSocket(port);
+            }
+            catch(IOException i){
+                System.out.println(i);
+            }
+        }
         if(findRequestLoop()){
+            System.out.println("requestfound");
             HttpRequest httprequest = readFoundRequest();
             icebox.handle(httprequest, clientSocket);
+            try{
+                clientSocket.close();
+                //server.close();
+            } catch (IOException i){
+                System.out.println(i);
+            }
         }
     }
     
