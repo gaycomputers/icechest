@@ -2,6 +2,7 @@
 package icechest;
 
 import java.io.*;
+import java.io.Serializable;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.URL;
@@ -12,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 
-public class HttpRequest {
+public class HttpRequest implements Serializable{
+    private static final long serialVersionUID = 1L;
     private int port = 80;
     private String host = null;
     private ArrayList<String[]> lines = new ArrayList<String[]>();
@@ -22,6 +24,7 @@ public class HttpRequest {
     private StringBuffer responseBody = null;
     private String status = null;
     private String contentline = null;
+    private String url;
 
     public HttpRequest() {
 
@@ -62,7 +65,12 @@ public class HttpRequest {
             return splitWords;
         }
     }
-
+    public void addURL(String ur){
+        url = ur;
+    }
+    public String getUrl(){
+        return url;
+    }
     public String getFullResponse(HttpURLConnection httpcon) throws IOException {
         System.out.println("get full response");
         StringBuilder response = new StringBuilder();

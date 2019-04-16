@@ -40,6 +40,9 @@ public class Parser{ //takes a string from input buffer and parses what we want 
                         if(words[0].equals("CONNECT") || words[0].equals("Referer")){ //https and referrals get dropped for now
                             httprequest.drop();
                         }
+                        if(words[0].equals("GET")){
+                            httprequest.addURL(words[1]);
+                        }
                         if (words[0].equals("Accept-Encoding:")) { // skip gzip encoding, etc., otherwise you're liable to get binary
                             line = reader.readLine();
                             words = splitter(line, "[ ]+");//drive loop
